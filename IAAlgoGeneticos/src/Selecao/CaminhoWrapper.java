@@ -26,7 +26,7 @@ public class CaminhoWrapper implements Comparable{
         if (o instanceof CaminhoWrapper)
         {
             CaminhoWrapper outroCaminho = (CaminhoWrapper)o;
-            return(this.fitness - outroCaminho.fitness);
+            return(outroCaminho.fitness - this.fitness);
         }
         return(0);
     }
@@ -38,5 +38,10 @@ public class CaminhoWrapper implements Comparable{
     public Caminho getCaminho()
     {
         return(caminho);
+    }
+    
+    protected void setFitness(int fitness)
+    {
+        this.fitness = fitness;
     }
 }

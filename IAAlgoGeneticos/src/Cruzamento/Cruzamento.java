@@ -15,9 +15,9 @@ import java.util.Random;
  * @author FREE
  */
 public abstract class Cruzamento {
-    int taxaCruzamento = 60;//entre 0-100;
+    double taxaCruzamento = 60.00;//entre 0-100;
     
-    public Cruzamento(int taxaCruzamento)
+    public Cruzamento(double taxaCruzamento)
     {
         this.taxaCruzamento = taxaCruzamento;
     }
@@ -25,7 +25,7 @@ public abstract class Cruzamento {
     public Caminho[] cruzamento(Caminho pai,Caminho mae)
     {
         Random gen = new Random();
-        int isCruzamento = gen.nextInt(100);
+        double isCruzamento = 100*gen.nextDouble();
         Caminho[] retornoFalso = new Caminho[2];
         retornoFalso[0] = pai;
         retornoFalso[1] = mae;

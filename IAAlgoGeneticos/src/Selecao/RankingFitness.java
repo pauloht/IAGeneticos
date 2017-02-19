@@ -8,15 +8,15 @@ package Selecao;
 import Model.Caminho;
 import Model.Populacao;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 /**
  *
  * @author FREE
  */
-public class Roleta implements TipoSelecao{
+public class RankingFitness implements TipoSelecao{
     private Populacao pop = null;
     private List< CaminhoWrapper > caminhosFitness;
     private int totalfitness = 0;
@@ -34,12 +34,19 @@ public class Roleta implements TipoSelecao{
             totalfitness = 0;
             for (Caminho c : caminho)
             {
-                int fitnesslocal = Math.max(1, new Double(maiorCusto - c.getCusto()).intValue());
+                int fitnesslocal = new Double(c.getCusto()).intValue();
                 //System.out.println("Caminho custo : " + c.getCusto());
                 //System.out.println("fitness local : " + fitnesslocal);
                 CaminhoWrapper wrapper = new CaminhoWrapper(c,fitnesslocal);
                 caminhosFitness.add(wrapper);
-                totalfitness = totalfitness + fitnesslocal;
+            }
+            Collections.sort(caminhosFitness);
+            int contador = 1;
+            for (CaminhoWrapper c : caminhosFitness)
+            {
+                c.setFitness(contador);
+                totalfitness = totalfitness+contador;
+                contador++;
             }
             //System.out.println("total fitness : " + totalfitness);
         }

@@ -12,8 +12,9 @@ import Model.Grafo;
 import Model.Populacao;
 import Mutacao.Mutacao;
 import Mutacao.SwapMutacao;
-import Selecao.Roleta;
+import Selecao.Fitness;
 import Selecao.Selecao;
+import Selecao.SelecaoEnum;
 import java.util.Locale;
 
 /**
@@ -23,13 +24,18 @@ import java.util.Locale;
 public class MenuPrincipal extends javax.swing.JFrame {
     private Grafo custo = null;
     private int nGeracoes = 0;
+    private int nPopulacao = 10;
+    private double taxaMutacao = 0.00;
+    private double taxaCruzamento = 0.00;
     private boolean lock = false;
+    private SelecaoEnum selecaoTipo = null;
     /**
      * Creates new form MenuPrincipal
      */
     public MenuPrincipal(Grafo custo) {
         initComponents();
         this.custo = custo;
+        forceValues();
     }
 
     /**
@@ -41,6 +47,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        bgMS = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lbApenasPercentage = new javax.swing.JLabel();
@@ -48,11 +55,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
         btIniciar = new javax.swing.JButton();
         tfGeracoes = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
+        tfTamanhoPopulacao = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        brFitness = new javax.swing.JRadioButton();
+        brRankingFitness = new javax.swing.JRadioButton();
+        jLabel4 = new javax.swing.JLabel();
+        jRadioButton3 = new javax.swing.JRadioButton();
+        jRadioButton4 = new javax.swing.JRadioButton();
         jTextField1 = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        tfTaxaCruzamento = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        tfTaxaMutacao = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
 
         lbApenasPercentage.setFont(new java.awt.Font("Lucida Console", 1, 24)); // NOI18N
         lbApenasPercentage.setText("%");
@@ -77,11 +101,14 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel1.setText("Geracoes");
 
-        jLabel2.setText("OBS : Perte enter depois de digitar o numero desejado");
-
         jLabel3.setText("TamanhoPopulacao");
 
-        jTextField1.setText("0");
+        tfTamanhoPopulacao.setText("0");
+        tfTamanhoPopulacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTamanhoPopulacaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -94,27 +121,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(lbApenasPercentage)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(13, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(96, 96, 96))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(28, 28, 28)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(tfGeracoes, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                                    .addComponent(jTextField1))
-                                .addGap(113, 113, 113)))
-                        .addGap(68, 68, 68))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(28, 28, 28)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(tfGeracoes, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                            .addComponent(tfTamanhoPopulacao))
+                        .addGap(181, 181, 181))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,32 +146,191 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbPercentage, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbApenasPercentage))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tfGeracoes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                    .addComponent(tfTamanhoPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 72, Short.MAX_VALUE)
                 .addComponent(btIniciar)
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("tab1", jPanel1);
+        jTabbedPane1.addTab("Iniciar!", jPanel1);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+
+        jLabel2.setText("Metodo de selecao :");
+
+        bgMS.add(brFitness);
+        brFitness.setText("Fitness");
+        brFitness.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brFitnessActionPerformed(evt);
+            }
+        });
+
+        bgMS.add(brRankingFitness);
+        brRankingFitness.setText("Ranking da fitness");
+        brRankingFitness.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brRankingFitnessActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Gerar nova populacao :");
+
+        jRadioButton3.setText("Totalmente nova");
+
+        jRadioButton4.setText("Manter os n melhores");
+        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton4ActionPerformed(evt);
+            }
+        });
+
+        jTextField1.setText("Algum valor no futuro");
+
+        jLabel7.setText("funciona");
+
+        jLabel8.setText("n funciona");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jRadioButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jRadioButton3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel8))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(brRankingFitness)
+                                .addComponent(brFitness))
+                            .addGap(45, 45, 45)
+                            .addComponent(jLabel7))))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(brFitness)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(brRankingFitness))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel7)))
+                .addGap(38, 38, 38)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton3)
+                    .addComponent(jLabel8))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jRadioButton4)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(70, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Selecao", jPanel2);
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+
+        tfTaxaCruzamento.setText("0.00");
+        tfTaxaCruzamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTaxaCruzamentoActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Taxa de cruzamento :");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addGap(18, 18, 18)
+                .addComponent(tfTaxaCruzamento, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(9, 9, 9)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(tfTaxaCruzamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(233, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Crussamento", jPanel3);
+
+        jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
+        jPanel4.setToolTipText("");
+
+        jLabel6.setText("Taxa mutacao :");
+
+        tfTaxaMutacao.setText("0.00");
+        tfTaxaMutacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfTaxaMutacaoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tfTaxaMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(56, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(tfTaxaMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(231, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Mutacao", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+            .addComponent(jTabbedPane1)
         );
 
         pack();
@@ -160,17 +342,18 @@ public class MenuPrincipal extends javax.swing.JFrame {
         {
             lock = true;
             lockValues();
+            long tBegin = System.nanoTime();
             forceValues();
             lbPercentage.setText("0");
             lbPercentage.paintImmediately(lbPercentage.getVisibleRect());
 
-            Populacao test = new Populacao(100, custo);//populacao inicial
+            Populacao test = new Populacao(nPopulacao, custo);//populacao inicial
             //test.printarInformacoes();
-            Cruzamento cruzamento = new OrderCrossOver(60);//cruzamento OX com 100% de chance de cruzamento
-            Selecao selecao = new Selecao(100, new Roleta());//usa roleta e fitness
-            Mutacao mutacao = new SwapMutacao(0.002);
+            Cruzamento cruzamento = new OrderCrossOver(taxaCruzamento);//cruzamento OX com 100% de chance de cruzamento
+            Selecao selecao = new Selecao(nPopulacao, new Fitness());//usa roleta e fitness
+            Mutacao mutacao = new SwapMutacao(taxaMutacao);
 
-            Blender prox = new Blender(test,selecao,cruzamento,mutacao,40,60,100);
+            Blender prox = new Blender(test,selecao,cruzamento,mutacao,0,nPopulacao,nPopulacao);
             double valorAgora;
             double mudancaNecessaria = 5.00;
             double percentage;
@@ -201,7 +384,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
             ViewGlobal.centralizarJanela(frame);
             frame.setVisible(true);
             */
-            GraficoFrame frame = new GraficoFrame(prox.getGraficodados());
+            long tEnd = System.nanoTime();
+            long elapsed = tEnd-tBegin;
+            GraficoFrame frame = new GraficoFrame(prox.getGraficodados(),elapsed);
             
             lbPercentage.setText("100");
             unlockValues();
@@ -214,6 +399,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void forceValues()
     {
         forceGeracoes();
+        forcePopulacao();
+        forceCruzamento();
+        forceMutacao();
+        forceSelecaoEnum();
     }
     
     private void forceGeracoes()
@@ -228,22 +417,136 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }
     
+    private void forcePopulacao()
+    {
+        try{
+            int n = Integer.parseInt(tfTamanhoPopulacao.getText());
+            nPopulacao = n;
+        }
+        catch(NumberFormatException e)
+        {
+            tfTamanhoPopulacao.setText( Integer.toString(nPopulacao ) );
+        }
+    }
+    
+    private void forceMutacao()
+    {
+        try{
+            double n = Double.parseDouble( tfTaxaMutacao.getText() );
+            taxaMutacao = n;
+        }
+        catch(NumberFormatException e)
+        {
+            tfTaxaMutacao.setText( Double.toString(taxaMutacao ) );
+        }
+    }
+    
+    private void forceCruzamento()
+    {
+        try{
+            double n = Double.parseDouble( tfTaxaCruzamento.getText() );
+            taxaCruzamento = n;
+        }
+        catch(NumberFormatException e)
+        {
+            tfTaxaCruzamento.setText( Double.toString(taxaCruzamento ) );
+        }
+    }
+    
+    private void forceSelecaoEnum()
+    {
+        try{
+            if (brFitness.isSelected())
+            {
+                selecaoTipo = SelecaoEnum.FITNESS;
+            }
+            else if (brRankingFitness.isSelected())
+            {
+                selecaoTipo = SelecaoEnum.RANKING_FITNESS;
+            }
+            else
+            {
+                brFitness.setSelected(true);
+                forceSelecaoEnumRecover();
+            }
+        }
+        catch(Exception e)
+        {
+            brFitness.setSelected(true);
+            forceSelecaoEnumRecover();
+        }
+    }
+    
+    private void forceSelecaoEnumRecover()
+    {
+        try{
+            if (brFitness.isSelected())
+            {
+                selecaoTipo = SelecaoEnum.FITNESS;
+            }
+            else if (brRankingFitness.isSelected())
+            {
+                selecaoTipo = SelecaoEnum.RANKING_FITNESS;
+            }
+        }
+        catch(Exception e)
+        {
+            brFitness.setSelected(true);
+        }
+    }
+    
+    private void alterValues(boolean valor)
+    {
+        btIniciar.setEnabled(valor);
+        tfGeracoes.setEditable(valor);
+        tfTamanhoPopulacao.setEditable(valor);
+        tfTaxaMutacao.setEditable(valor);
+        tfTaxaCruzamento.setEditable(valor); 
+    }
+    
     private void lockValues()
     {
-        btIniciar.setEnabled(false);
-        tfGeracoes.setEditable(false);
+        alterValues(false);
     }
     
     private void unlockValues()
     {
-        btIniciar.setEnabled(true);
-        tfGeracoes.setEditable(true);
+        alterValues(true);
     }
     
     private void tfGeracoesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfGeracoesActionPerformed
         // TODO add your handling code here:
         forceGeracoes();
     }//GEN-LAST:event_tfGeracoesActionPerformed
+
+    private void tfTamanhoPopulacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTamanhoPopulacaoActionPerformed
+        // TODO add your handling code here:
+        forcePopulacao();
+    }//GEN-LAST:event_tfTamanhoPopulacaoActionPerformed
+
+    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jRadioButton4ActionPerformed
+
+    private void tfTaxaMutacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTaxaMutacaoActionPerformed
+        // TODO add your handling code here:
+        forceMutacao();
+    }//GEN-LAST:event_tfTaxaMutacaoActionPerformed
+
+    private void tfTaxaCruzamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTaxaCruzamentoActionPerformed
+        // TODO add your handling code here:
+        forceCruzamento();
+    }//GEN-LAST:event_tfTaxaCruzamentoActionPerformed
+
+    private void brFitnessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brFitnessActionPerformed
+        // TODO add your handling code here:
+        forceSelecaoEnum();
+    }//GEN-LAST:event_brFitnessActionPerformed
+
+    private void brRankingFitnessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brRankingFitnessActionPerformed
+        // TODO add your handling code here:
+        forceSelecaoEnum();
+    }//GEN-LAST:event_brRankingFitnessActionPerformed
 
     /**
      * @param args the command line arguments
@@ -281,15 +584,31 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bgMS;
+    private javax.swing.JRadioButton brFitness;
+    private javax.swing.JRadioButton brRankingFitness;
     private javax.swing.JButton btIniciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JRadioButton jRadioButton3;
+    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbApenasPercentage;
     private javax.swing.JLabel lbPercentage;
     private javax.swing.JTextField tfGeracoes;
+    private javax.swing.JTextField tfTamanhoPopulacao;
+    private javax.swing.JTextField tfTaxaCruzamento;
+    private javax.swing.JTextField tfTaxaMutacao;
     // End of variables declaration//GEN-END:variables
 }

@@ -21,13 +21,14 @@ public class GraficoFrame extends javax.swing.JFrame {
     /**
      * Creates new form GraficoFrame
      */
-    public GraficoFrame(graficoDados dados) {
+    public GraficoFrame(graficoDados dados,long tempo) {
         initComponents();
         if (dados!=null)
         {
             this.setVisible(false);
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             lbMenorCaminho.setText( String.format(Locale.US,"%.4f",(dados.getMenorGlobal())) );
+            lbTempo.setText( String.format(Locale.US,"%.4f",((tempo+0.00)/(Math.pow(10, 9)))) );
             JPanel panel = new GraficoJPanel(dados);
             panel.setPreferredSize(new Dimension(800,600));
             pGraficoPosition.setLayout(new FlowLayout(FlowLayout.LEADING,0,0));
@@ -62,6 +63,8 @@ public class GraficoFrame extends javax.swing.JFrame {
         pGraficoPosition = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        lbTempo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         lbMenorCaminho = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -83,7 +86,13 @@ public class GraficoFrame extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Menor caminho :");
+        jLabel1.setText("Tempo:");
+
+        lbTempo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        lbTempo.setText("Menor caminho Aki");
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel2.setText("Menor caminho :");
 
         lbMenorCaminho.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         lbMenorCaminho.setText("Menor caminho Aki");
@@ -93,20 +102,40 @@ public class GraficoFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(188, 188, 188)
                 .addComponent(jLabel1)
-                .addGap(30, 30, 30)
-                .addComponent(lbMenorCaminho, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbTempo, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                .addGap(20, 20, 20))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(20, 20, 20)
+                    .addComponent(jLabel2)
+                    .addContainerGap(467, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(333, 333, 333)
+                    .addComponent(lbMenorCaminho, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                    .addGap(20, 20, 20)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
+                .addGap(111, 111, 111)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(lbMenorCaminho))
-                .addContainerGap(43, Short.MAX_VALUE))
+                    .addComponent(lbTempo))
+                .addContainerGap(60, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(44, 44, 44)
+                    .addComponent(jLabel2)
+                    .addContainerGap(127, Short.MAX_VALUE)))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(44, 44, 44)
+                    .addComponent(lbMenorCaminho)
+                    .addContainerGap(127, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -160,15 +189,17 @@ public class GraficoFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GraficoFrame(null).setVisible(true);
+                new GraficoFrame(null,0).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbMenorCaminho;
+    private javax.swing.JLabel lbTempo;
     private javax.swing.JPanel pGraficoPosition;
     // End of variables declaration//GEN-END:variables
 }

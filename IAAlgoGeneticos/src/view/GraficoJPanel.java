@@ -24,8 +24,6 @@ public class GraficoJPanel extends javax.swing.JPanel {
     public GraficoJPanel(graficoDados dados)
     {
         this.dados = dados;
-        
-        dados.printar();
     }
     
     @Override

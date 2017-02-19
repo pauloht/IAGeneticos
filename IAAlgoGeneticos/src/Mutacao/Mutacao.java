@@ -37,6 +37,10 @@ public abstract class Mutacao {
             //System.out.println("falhou mutacao");
         }
     }
+
+    public double getChanceMutacao() {
+        return chanceMutacao;
+    }
     
     protected abstract void mutarTrue(Caminho pop,int cromossomoPosicao);
 }

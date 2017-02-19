@@ -16,7 +16,7 @@ import java.util.Random;
  */
 public class OrderCrossOver extends Cruzamento{
 
-    public OrderCrossOver(int taxaCruzamento) {
+    public OrderCrossOver(double taxaCruzamento) {
         super(taxaCruzamento);
     }
 

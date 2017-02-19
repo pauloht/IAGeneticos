@@ -68,14 +68,16 @@ public class Blender {
             novaPop.add(nSelecao[i]);
         }
         
-        for (Caminho caminho : novaPop)
+        if (mutacao.getChanceMutacao()!=0.00)
         {
-            for (int i=0;i<caminho.getCaminho().length;i++)
+            for (Caminho caminho : novaPop)
             {
-                mutacao.mutar(caminho, i);
+                for (int i=0;i<caminho.getCaminho().length;i++)
+                {
+                    mutacao.mutar(caminho, i);
+                }
             }
         }
-        
         pop.updatePop(novaPop);
         pop.incGeracao();
         graficodados.addMaiorMenor(pop);
