@@ -9,7 +9,7 @@ Mutacao swap
 
 A esquerda(mutacao 0% Exemplo de estagnacao devido a falta de mutacao ou % muito baixa)
 
-A direita(mutacao 0.001% Exemplo de valor bom)
+A direita(mutacao 0.01% Exemplo de valor bom)
 
 Topo(mutacao 1% Exemplo de valor de mutacao muito alto impossibilitando conversão)
 
