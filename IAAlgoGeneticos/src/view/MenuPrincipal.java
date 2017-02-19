@@ -320,7 +320,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel6.setText("Taxa mutacao :");
 
-        tfTaxaMutacao.setText("0.00");
+        tfTaxaMutacao.setText("0.01");
         tfTaxaMutacao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfTaxaMutacaoActionPerformed(evt);
