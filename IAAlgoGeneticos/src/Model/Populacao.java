@@ -36,23 +36,32 @@ public class Populacao {
         {
             //System.out.println("Gerado novo caminho...");
             Caminho novoCaminho = Gerador.CaminhoGen.gerarRandomCaminho();
-            custos.calcularCustoCaminho(novoCaminho);
-            
+            pop.add(novoCaminho);
+        }
+        recalcularCustosStart();
+    }
+    
+    private void recalcularCustosStart()
+    {
+        for (int i=0;i<pop.size();i++)
+        {
+            Caminho caminhoCorrente = pop.get(i);
+            custos.calcularCustoCaminho(caminhoCorrente);
             if (i==0)
             {
-                maiorCustoLocal = novoCaminho.getCusto();
-                menorCustoLocal = novoCaminho.getCusto();
+                maiorCustoLocal = caminhoCorrente.getCusto();
+                menorCustoLocal = caminhoCorrente.getCusto();
+                maiorCustoGlobal = caminhoCorrente.getCusto();
+                menorCustoGlobal = caminhoCorrente.getCusto();
             }
             else
             {
-                maiorCustoLocal = Math.max(maiorCustoLocal, novoCaminho.getCusto());
-                menorCustoLocal = Math.min(maiorCustoLocal, novoCaminho.getCusto());
+                maiorCustoLocal = Math.max(maiorCustoLocal, caminhoCorrente.getCusto());
+                menorCustoLocal = Math.min(menorCustoLocal, caminhoCorrente.getCusto());
             }
-            
-            pop.add(novoCaminho);
+            //System.out.println("MaiorCustoLocal : " + maiorCustoLocal);
+            //System.out.println("MenorCustoLocal : " + menorCustoLocal);
         }
-        maiorCustoGlobal = maiorCustoLocal;
-        menorCustoGlobal = menorCustoLocal;
         Collections.sort(pop);
     }
     
@@ -123,7 +132,6 @@ public class Populacao {
         System.out.println("Maior custo local  : " + maiorCustoLocal);
         System.out.println("Menor custo local : " + menorCustoLocal);
         
-        /*
         System.out.println("Custos : ");
         System.out.print("[");
         for (int i=0;i<pop.size()-1;i++)
@@ -131,6 +139,5 @@ public class Populacao {
             System.out.print(String.format(Locale.US,"%3.2f",pop.get(i).getCusto() ) + ",");
         }
         System.out.println(String.format(Locale.US,"%3.2f",pop.get(pop.size()-1).getCusto() ) + "]");
-        */
     }
 }

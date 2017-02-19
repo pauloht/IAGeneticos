@@ -5,6 +5,7 @@ import Grafico.graficoDados;
 import Model.Caminho;
 import Model.Populacao;
 import Mutacao.Mutacao;
+import Selecao.GeracaoNovaEnum;
 import Selecao.Selecao;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,38 +27,56 @@ public class Blender {
     private Mutacao mutacao;
     private graficoDados graficodados;
     
-    int nPorSelecao;
-    int nPorCruzamento;
     int nTotal;
 
-    public Blender(Populacao pop,Selecao selecao, Cruzamento cruzamento, Mutacao mutacao ,int nPorSelecao, int nPorCruzamento, int nTotal) {
+    public Blender(Populacao pop,Selecao selecao, Cruzamento cruzamento, Mutacao mutacao, int nTotal) {
         this.selecao = selecao;
         this.cruzamento = cruzamento;
-        this.nPorSelecao = nPorSelecao;
-        this.nPorCruzamento = nPorCruzamento;
         this.nTotal = nTotal;
         this.mutacao = mutacao;
         this.graficodados = new graficoDados(pop);
-        
-        if ((nPorSelecao+nPorCruzamento!=nTotal))
-        {
-            throw new IllegalArgumentException("Incoreenrencia ao criar blender");
-        }
     }
     
     public void proximaGeracao(Populacao pop)
     {
-        selecao.gerarNovaPopulacao(pop);//gera nova Populacao seleciona elementos da populacao antiga
+        //System.out.println("BlenderInicioPop : " + pop.getPop().size());
         Caminho pai,mae;
         
         pai = selecao.selecionar(pop);
         mae = selecao.selecionar(pop);
+        
+        int nPorCruzamento;
+        int nPorSelecao;
+        
+        if (selecao.getGeracaoNova()==GeracaoNovaEnum.TOTALMENTE_NOVA)
+        {
+            nPorCruzamento = nTotal;
+            nPorSelecao = 0;
+        }
+        else if (selecao.getGeracaoNova()==GeracaoNovaEnum.ELISTISTA)
+        {
+            nPorSelecao = selecao.getQuantiaGeradoPorSelecao();
+            nPorCruzamento = nTotal - nPorSelecao;
+        }
+        else
+        {
+            //System.out.println("ELSE TRIGGER");
+            nPorSelecao = 0;
+            nPorCruzamento = 0;
+        }
+        
         Caminho[] nCruzamento = cruzamento.gerarNCaminhosPorMutacao(selecao, pop, nPorCruzamento);
+        Caminho[] nSelecao = selecao.gerarNCaminhosPorSelecao(pop, nPorSelecao);
+        
+        //System.out.println("nPorSelecao : " + nPorSelecao + ", realsize : " + nSelecao.length);
+        //System.out.println("nPorCruzamento : " + nPorCruzamento + ", realsize : " + nCruzamento.length);
+        /*
         Caminho[] nSelecao = new Caminho[nPorSelecao];
         for (int i=0;i<nPorSelecao;i++)
         {
             nSelecao[i] = selecao.selecionar(pop);
         }
+        */
         List< Caminho > novaPop = new ArrayList<>();
         for (int i=0;i<nCruzamento.length;i++)
         {
@@ -70,13 +89,7 @@ public class Blender {
         
         if (mutacao.getChanceMutacao()!=0.00)
         {
-            for (Caminho caminho : novaPop)
-            {
-                for (int i=0;i<caminho.getCaminho().length;i++)
-                {
-                    mutacao.mutar(caminho, i);
-                }
-            }
+            mutacao.mutar(novaPop);
         }
         pop.updatePop(novaPop);
         pop.incGeracao();

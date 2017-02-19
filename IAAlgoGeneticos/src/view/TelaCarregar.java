@@ -1,7 +1,6 @@
 package view;
 
 
-import Model.Caminho;
 import Model.Grafo;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -24,6 +23,7 @@ public class TelaCarregar extends javax.swing.JFrame {
      */
     public TelaCarregar() {
         initComponents();
+        ViewGlobal.centralizarJanela(this);
     }
 
     /**

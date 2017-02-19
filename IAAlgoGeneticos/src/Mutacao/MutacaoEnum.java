@@ -3,24 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Selecao;
+package Mutacao;
 
 /**
  *
  * @author FREE
  */
-public enum SelecaoEnum {
-    FITNESS,
-    RANKING_FITNESS;
+public enum MutacaoEnum {
+    SWAP,
+    FASTSWAP;
     
-    public TipoSelecao getSelecao()
-    {
+    public Mutacao getMutacaoInstancia(double mutacaochance){
         switch (this)
         {
-            case FITNESS :
-                return(new Fitness());
-            case RANKING_FITNESS :
-                return(new RankingFitness());
+            case SWAP :
+                return(new SwapMutacao(mutacaochance));
+            case FASTSWAP :
+                return(new FastSwap(mutacaochance));
             default :
                 return(null);
         }

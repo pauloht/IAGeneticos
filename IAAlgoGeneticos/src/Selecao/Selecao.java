@@ -18,10 +18,12 @@ import java.util.List;
 public class Selecao {
     private int quantiaGeradoPorSelecao;
     private TipoSelecao tipoSelecao;
+    private GeracaoNovaEnum geracaoNova;
 
-    public Selecao(int quantiaGeradaPorSelecao, TipoSelecao tipoSelecao) {
+    public Selecao(int quantiaGeradaPorSelecao, TipoSelecao tipoSelecao,GeracaoNovaEnum novaGeracao) {
         this.quantiaGeradoPorSelecao = quantiaGeradaPorSelecao;
         this.tipoSelecao = tipoSelecao;
+        this.geracaoNova = novaGeracao;
     }
     
     public void gerarNovaPopulacao(Populacao populacaoDeEntrada)
@@ -35,8 +37,23 @@ public class Selecao {
         populacaoDeEntrada.updatePop(novoCaminho);
     }
     
+    public Caminho[] gerarNCaminhosPorSelecao(Populacao pop,int n)
+    {
+        return( geracaoNova.pegarNCaminhos(pop, n) );
+    }
+    
     public Caminho selecionar(Populacao pop)
     {
         return( tipoSelecao.selecionar(pop) );
     }
+
+    public GeracaoNovaEnum getGeracaoNova() {
+        return geracaoNova;
+    }
+
+    public int getQuantiaGeradoPorSelecao() {
+        return quantiaGeradoPorSelecao;
+    }
+    
+    
 }

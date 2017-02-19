@@ -6,41 +6,34 @@
 package Mutacao;
 
 import Model.Caminho;
-import java.util.Random;
+import Model.Populacao;
+import java.util.List;
 
 /**
  *
  * @author FREE
  */
 public abstract class Mutacao {
-    double chanceMutacao = 0.00;//entre 0-100
+    protected double chanceMutacao = 0.00;//entre 0-100
     public Mutacao(double chance)
     {
         chanceMutacao = chance;
     }
     
-    public void mutar(Caminho pop,int cromossomoPosicao)
+    public void mutar(Populacao pop)
     {
-        Random gem = new Random();
-        double roll = gem.nextDouble();
-        roll = roll*100;
-        //double roll = gem.nextDouble()*100;
-        //System.out.println("Rolou : " + roll);
-        if (roll <= chanceMutacao)
-        {
-            
-            //System.out.println("Prescissa de : " + chanceMutacao + " , rolou : " + roll);
-            mutarTrue(pop,cromossomoPosicao);
-        }
-        else
-        {
-            //System.out.println("falhou mutacao");
-        }
+        mutarTrue(pop);
+    }
+    
+    public void mutar(List<Caminho> caminhos)
+    {
+        mutarTrue(caminhos);
     }
 
     public double getChanceMutacao() {
         return chanceMutacao;
     }
     
-    protected abstract void mutarTrue(Caminho pop,int cromossomoPosicao);
+    protected abstract void mutarTrue(Populacao pop);
+    protected abstract void mutarTrue(List< Caminho > caminhos);
 }

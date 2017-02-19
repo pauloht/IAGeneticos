@@ -72,7 +72,8 @@ public class Caminho implements Comparable{
             Caminho outroCaminho = (Caminho)o;
             if (outroCaminho.custo!=null && this.custo!=null)
             {
-                return( new Double(custo-outroCaminho.custo).intValue() );
+                return( this.custo.compareTo(outroCaminho.custo) );
+                //return( new Double(custo-outroCaminho.custo).intValue() );
             }
         }
         return(0);

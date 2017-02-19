@@ -1,0 +1,24 @@
+Mensao honrosa 1 :
+Ambos : 
+Geracoes 10000
+Populacoa 100
+Cruzamento 60%
+Elitista 10
+Selecao fitness 
+Mutacao swap
+
+A esquerda(mutacao 0% Exemplo de estagnacao devido a falta de mutacao ou % muito baixa)
+
+A direita(mutacao 0.001% Exemplo de valor bom)
+
+Topo(mutacao 1% Exemplo de valor de mutacao muito alto impossibilitando conversão)
+
+Mensao honrosa 2 :
+Geracoes 50000
+Populacao 100
+Cruzamento 60%
+Elitista 6
+Selecao fitness
+Mutacao fastswap 0.01%
+
+Menor tempo encontrado ate agora

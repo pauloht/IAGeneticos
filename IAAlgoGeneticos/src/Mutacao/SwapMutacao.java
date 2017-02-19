@@ -6,6 +6,8 @@
 package Mutacao;
 
 import Model.Caminho;
+import Model.Populacao;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,25 +21,42 @@ public class SwapMutacao extends Mutacao{
     }
 
     @Override
-    protected void mutarTrue(Caminho pop, int cromossomoPosicao) {
-        Random gem = new Random();
-        int indiceTrocado = 0;
-        while (true)
+    protected void mutarTrue(Populacao pop) {
+        List< Caminho > caminhos = pop.getPop();
+        mutarTrue(caminhos);
+    }
+
+    @Override
+    protected void mutarTrue(List<Caminho> caminhos) {
+        for (Caminho c : caminhos)
         {
-            indiceTrocado = gem.nextInt(pop.getCaminho().length);
-            if (indiceTrocado!=cromossomoPosicao)
+            for (int i=0;i<c.getCaminho().length;i++)
             {
-                break;
+                Random gen = new Random();
+                double teraMutacao = 100*gen.nextDouble();
+                if (teraMutacao<=chanceMutacao)
+                {
+                    int indiceTrocado = 0;
+                    while (true)
+                    {
+                        indiceTrocado = gen.nextInt(c.getCaminho().length);
+                        if (indiceTrocado!=i)
+                        {
+                            break;
+                        }
+                    }
+                    //System.out.println("Antes da mutacao com indices " + cromossomoPosicao + "," + indiceTrocado);
+                    //pop.printCaminho();
+                    int[] caminho = c.getCaminho();
+                    int aux = caminho[i];
+                    caminho[i] = caminho[indiceTrocado];
+                    caminho[indiceTrocado] = aux;
+                }
+                //System.out.println("Depois da mutacao");
+                //pop.printCaminho();
+                
             }
         }
-        //System.out.println("Antes da mutacao com indices " + cromossomoPosicao + "," + indiceTrocado);
-        //pop.printCaminho();
-        int[] caminho = pop.getCaminho();
-        int aux = caminho[cromossomoPosicao];
-        caminho[cromossomoPosicao] = caminho[indiceTrocado];
-        caminho[indiceTrocado] = aux;
-        //System.out.println("Depois da mutacao");
-        //pop.printCaminho();
     }
     
 }

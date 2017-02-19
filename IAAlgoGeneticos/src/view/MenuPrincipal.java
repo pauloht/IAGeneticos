@@ -11,11 +11,12 @@ import Cruzamento.OrderCrossOver;
 import Model.Grafo;
 import Model.Populacao;
 import Mutacao.Mutacao;
-import Mutacao.SwapMutacao;
-import Selecao.Fitness;
+import Mutacao.MutacaoEnum;
+import Selecao.GeracaoNovaEnum;
 import Selecao.Selecao;
 import Selecao.SelecaoEnum;
 import java.util.Locale;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,6 +30,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private double taxaCruzamento = 0.00;
     private boolean lock = false;
     private SelecaoEnum selecaoTipo = null;
+    private GeracaoNovaEnum novaGeracao = null;
+    private MutacaoEnum mutacaoTipo = null;
+    private int nElitista = 0;
     /**
      * Creates new form MenuPrincipal
      */
@@ -36,6 +40,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         this.custo = custo;
         forceValues();
+        ViewGlobal.centralizarJanela(this);
     }
 
     /**
@@ -47,7 +52,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bgMS = new javax.swing.ButtonGroup();
+        bgSelecaoTipo = new javax.swing.ButtonGroup();
+        bgNovaGeracao = new javax.swing.ButtonGroup();
+        bgMutacaoTipo = new javax.swing.ButtonGroup();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         lbApenasPercentage = new javax.swing.JLabel();
@@ -62,17 +69,20 @@ public class MenuPrincipal extends javax.swing.JFrame {
         brFitness = new javax.swing.JRadioButton();
         brRankingFitness = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jTextField1 = new javax.swing.JTextField();
+        brTotalmenteNova = new javax.swing.JRadioButton();
+        brElitista = new javax.swing.JRadioButton();
+        tfNElitista = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         tfTaxaCruzamento = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         tfTaxaMutacao = new javax.swing.JTextField();
+        brSwap = new javax.swing.JRadioButton();
+        brFastSwap = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -121,7 +131,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(lbApenasPercentage)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(13, Short.MAX_VALUE)
+                .addContainerGap(23, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(btIniciar, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -165,7 +175,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel2.setText("Metodo de selecao :");
 
-        bgMS.add(brFitness);
+        bgSelecaoTipo.add(brFitness);
         brFitness.setText("Fitness");
         brFitness.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,7 +183,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
-        bgMS.add(brRankingFitness);
+        bgSelecaoTipo.add(brRankingFitness);
         brRankingFitness.setText("Ranking da fitness");
         brRankingFitness.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -183,20 +193,34 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jLabel4.setText("Gerar nova populacao :");
 
-        jRadioButton3.setText("Totalmente nova");
-
-        jRadioButton4.setText("Manter os n melhores");
-        jRadioButton4.addActionListener(new java.awt.event.ActionListener() {
+        bgNovaGeracao.add(brTotalmenteNova);
+        brTotalmenteNova.setText("Totalmente nova");
+        brTotalmenteNova.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton4ActionPerformed(evt);
+                brTotalmenteNovaActionPerformed(evt);
             }
         });
 
-        jTextField1.setText("Algum valor no futuro");
+        bgNovaGeracao.add(brElitista);
+        brElitista.setText("Elitista(mantem n melhores)");
+        brElitista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brElitistaActionPerformed(evt);
+            }
+        });
+
+        tfNElitista.setText("0");
+        tfNElitista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tfNElitistaActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("funciona");
 
-        jLabel8.setText("n funciona");
+        jLabel8.setText("Sera autobalanceado ver manual");
+
+        jLabel9.setText("N elementos pela elitista");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -205,24 +229,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jRadioButton4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel9)
                     .addComponent(jLabel4)
                     .addComponent(jLabel2)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jRadioButton3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel8))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(brTotalmenteNova, javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(brRankingFitness)
                                 .addComponent(brFitness))
                             .addGap(45, 45, 45)
-                            .addComponent(jLabel7))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                            .addComponent(jLabel7)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(tfNElitista, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(brElitista, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel8)))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,21 +265,23 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGap(38, 38, 38)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton3)
-                    .addComponent(jLabel8))
+                .addComponent(brTotalmenteNova)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(brElitista)
+                .addGap(3, 3, 3)
+                .addComponent(jLabel9)
+                .addGap(1, 1, 1)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton4)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                    .addComponent(tfNElitista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Selecao", jPanel2);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 5));
 
-        tfTaxaCruzamento.setText("0.00");
+        tfTaxaCruzamento.setText("60.00");
         tfTaxaCruzamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tfTaxaCruzamentoActionPerformed(evt);
@@ -273,7 +299,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addComponent(jLabel5)
                 .addGap(18, 18, 18)
                 .addComponent(tfTaxaCruzamento, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -299,16 +325,36 @@ public class MenuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        bgMutacaoTipo.add(brSwap);
+        brSwap.setText("Swap");
+        brSwap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brSwapActionPerformed(evt);
+            }
+        });
+
+        bgMutacaoTipo.add(brFastSwap);
+        brFastSwap.setText("FastSwap");
+        brFastSwap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                brFastSwapActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tfTaxaMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(brFastSwap)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(tfTaxaMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(brSwap))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +363,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(tfTaxaMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(brFastSwap)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(brSwap)
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mutacao", jPanel4);
@@ -341,56 +391,64 @@ public class MenuPrincipal extends javax.swing.JFrame {
         if (!lock)
         {
             lock = true;
-            lockValues();
-            long tBegin = System.nanoTime();
-            forceValues();
-            lbPercentage.setText("0");
-            lbPercentage.paintImmediately(lbPercentage.getVisibleRect());
+            try{
+                lockValues();
+                long tBegin = System.nanoTime();
+                forceValues();
+                lbPercentage.setText("0");
+                lbPercentage.paintImmediately(lbPercentage.getVisibleRect());
 
-            Populacao test = new Populacao(nPopulacao, custo);//populacao inicial
-            //test.printarInformacoes();
-            Cruzamento cruzamento = new OrderCrossOver(taxaCruzamento);//cruzamento OX com 100% de chance de cruzamento
-            Selecao selecao = new Selecao(nPopulacao, new Fitness());//usa roleta e fitness
-            Mutacao mutacao = new SwapMutacao(taxaMutacao);
+                Populacao test = new Populacao(nPopulacao, custo);//populacao inicial
+                //test.printarInformacoes();
+                Cruzamento cruzamento = new OrderCrossOver(taxaCruzamento);//cruzamento OX com 100% de chance de cruzamento
+                Selecao selecao = new Selecao(nElitista, selecaoTipo.getSelecao(),novaGeracao);//usa roleta e fitness
+                Mutacao mutacao = mutacaoTipo.getMutacaoInstancia(taxaMutacao);
 
-            Blender prox = new Blender(test,selecao,cruzamento,mutacao,0,nPopulacao,nPopulacao);
-            double valorAgora;
-            double mudancaNecessaria = 5.00;
-            double percentage;
-            int total = nGeracoes;
-            for (int i=0;i<total;i++)
-            {
-                valorAgora = Double.parseDouble( lbPercentage.getText() );
-                percentage = 100*(i+1+0.00)/(total+0.00);
-                //System.out.println("percentage : " + percentage);
-                //System.out.println("valoragora : " + valorAgora);
-                //System.out.println("percenta-valoragora : " + (percentage - valorAgora));
-                if ((percentage - valorAgora) >= mudancaNecessaria)
+                Blender prox = new Blender(test,selecao,cruzamento,mutacao,nPopulacao);
+                double valorAgora;
+                double mudancaNecessaria = 1.00;
+                double percentage;
+                int total = nGeracoes;
+                for (int i=0;i<total;i++)
                 {
-                    //System.out.println("TRUEEEEEEEEEEEEEEEEEEEEEE");
-                    lbPercentage.setText(String.format(Locale.US,"%.2f",percentage));
-                    lbPercentage.paintImmediately(lbPercentage.getVisibleRect());
+                    valorAgora = Double.parseDouble( lbPercentage.getText() );
+                    percentage = 100*(i+1+0.00)/(total+0.00);
+                    //System.out.println("percentage : " + percentage);
+                    //System.out.println("valoragora : " + valorAgora);
+                    //System.out.println("percenta-valoragora : " + (percentage - valorAgora));
+                    if ((percentage - valorAgora) >= mudancaNecessaria)
+                    {
+                        //System.out.println("TRUEEEEEEEEEEEEEEEEEEEEEE");
+                        lbPercentage.setText(String.format(Locale.US,"%.2f",percentage));
+                        lbPercentage.paintImmediately(lbPercentage.getVisibleRect());
+                    }
+                    prox.proximaGeracao(test);
                 }
-                prox.proximaGeracao(test);
+                //test.printarInformacoes();
+                /*
+                JFrame frame = new JFrame();
+                JPanel panel = new GraficoJPanel(prox.getGraficodados());
+                panel.setPreferredSize(new Dimension(800,600));
+                panel.setBackground(Color.GRAY);
+                frame.add(panel);
+                frame.pack();
+                ViewGlobal.centralizarJanela(frame);
+                frame.setVisible(true);
+                */
+                long tEnd = System.nanoTime();
+                long elapsed = tEnd-tBegin;
+                GraficoFrame frame = new GraficoFrame(prox.getGraficodados(),elapsed);
+                lbPercentage.setText("100");
+                unlockValues();
+                lock = false;
             }
-            //test.printarInformacoes();
-            /*
-            JFrame frame = new JFrame();
-            JPanel panel = new GraficoJPanel(prox.getGraficodados());
-            panel.setPreferredSize(new Dimension(800,600));
-            panel.setBackground(Color.GRAY);
-            frame.add(panel);
-            frame.pack();
-            ViewGlobal.centralizarJanela(frame);
-            frame.setVisible(true);
-            */
-            long tEnd = System.nanoTime();
-            long elapsed = tEnd-tBegin;
-            GraficoFrame frame = new GraficoFrame(prox.getGraficodados(),elapsed);
-            
-            lbPercentage.setText("100");
-            unlockValues();
-            lock = false;
+            catch(Exception e)
+            {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Opa algo estranho aconteceu, teremos que cancelar =(, tente de novo!");
+                unlockValues();
+                lock = false;
+            }
         }
         //Caminho filho1 = filhos[0];
         //Caminho filho2 = filhos[1];
@@ -403,6 +461,9 @@ public class MenuPrincipal extends javax.swing.JFrame {
         forceCruzamento();
         forceMutacao();
         forceSelecaoEnum();
+        forceGeracaoNovaEnum();
+        forceNElitista();
+        forceMutacaoEnum();
     }
     
     private void forceGeracoes()
@@ -421,7 +482,24 @@ public class MenuPrincipal extends javax.swing.JFrame {
     {
         try{
             int n = Integer.parseInt(tfTamanhoPopulacao.getText());
-            nPopulacao = n;
+            if (n%2==1)
+            {
+                n=n-1;
+            }
+            if (n<0)
+            {
+                tfTamanhoPopulacao.setText( Integer.toString(nPopulacao ) );
+            }
+            else
+            {
+                if (n<nElitista)
+                {
+                    nElitista = n;
+                    tfNElitista.setText( Integer.toString(nElitista ) );
+                }
+                nPopulacao = n;
+            }
+            tfTamanhoPopulacao.setText( Integer.toString(nPopulacao ) );
         }
         catch(NumberFormatException e)
         {
@@ -495,6 +573,125 @@ public class MenuPrincipal extends javax.swing.JFrame {
         }
     }
     
+    private void forceGeracaoNovaEnum()
+    {
+        try{
+            if (brTotalmenteNova.isSelected())
+            {
+                novaGeracao = GeracaoNovaEnum.TOTALMENTE_NOVA;
+            }
+            else if (brElitista.isSelected())
+            {
+                novaGeracao = GeracaoNovaEnum.ELISTISTA;
+            }
+            else
+            {
+                brElitista.setSelected(true);
+                forceGeracaoNovaEnumRecover();
+            }
+        }
+        catch(Exception e)
+        {
+            brElitista.setSelected(true);
+            forceGeracaoNovaEnumRecover();
+        }
+    }
+    
+    private void forceGeracaoNovaEnumRecover()
+    {
+        try{
+            if (brTotalmenteNova.isSelected())
+            {
+                novaGeracao = GeracaoNovaEnum.TOTALMENTE_NOVA;
+            }
+            else if (brElitista.isSelected())
+            {
+                novaGeracao = GeracaoNovaEnum.ELISTISTA;
+            }
+            else
+            {
+                brElitista.setSelected(true);
+            }
+        }
+        catch(Exception e)
+        {
+            brElitista.setSelected(true);
+        }
+    }
+    
+    private void forceMutacaoEnum()
+    {
+        try{
+            if (brSwap.isSelected())
+            {
+                mutacaoTipo = MutacaoEnum.SWAP;
+            }
+            else if (brFastSwap.isSelected())
+            {
+                mutacaoTipo = MutacaoEnum.FASTSWAP;
+            }
+            else
+            {
+                brFastSwap.setSelected(true);
+                forceMutacaoEnumRecover();
+            }
+        }
+        catch(Exception e)
+        {
+            brTotalmenteNova.setSelected(true);
+            forceMutacaoEnumRecover();
+        }
+    }
+    
+    private void forceMutacaoEnumRecover()
+    {
+        try{
+            if (brSwap.isSelected())
+            {
+                mutacaoTipo = MutacaoEnum.SWAP;
+            }
+            else if (brFastSwap.isSelected())
+            {
+                mutacaoTipo = MutacaoEnum.FASTSWAP;
+            }
+            else
+            {
+                brSwap.setSelected(true);
+            }
+        }
+        catch(Exception e)
+        {
+            brTotalmenteNova.setSelected(true);
+        }
+    }
+    
+    private void forceNElitista()
+    {
+        try{
+            int n = Integer.parseInt(tfNElitista.getText());
+            if (n > nPopulacao)
+            {
+                tfNElitista.setText( Integer.toString(nElitista ) );
+            }
+            else
+            {
+                if ((nPopulacao-n)%2==1)
+                {
+                    nElitista = (n-1);
+                }
+                else
+                {
+                    nElitista = n;
+                }
+                tfNElitista.setText( Integer.toString(nElitista));
+            }
+        }
+        catch(NumberFormatException e)
+        {
+            tfNElitista.setText( Integer.toString(nElitista ) );
+        }
+    }
+    
     private void alterValues(boolean valor)
     {
         btIniciar.setEnabled(valor);
@@ -524,9 +721,10 @@ public class MenuPrincipal extends javax.swing.JFrame {
         forcePopulacao();
     }//GEN-LAST:event_tfTamanhoPopulacaoActionPerformed
 
-    private void jRadioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton4ActionPerformed
+    private void brElitistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brElitistaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton4ActionPerformed
+        forceGeracaoNovaEnum();
+    }//GEN-LAST:event_brElitistaActionPerformed
 
     private void tfTaxaMutacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfTaxaMutacaoActionPerformed
         // TODO add your handling code here:
@@ -547,6 +745,26 @@ public class MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         forceSelecaoEnum();
     }//GEN-LAST:event_brRankingFitnessActionPerformed
+
+    private void tfNElitistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfNElitistaActionPerformed
+        // TODO add your handling code here:
+        forceNElitista();
+    }//GEN-LAST:event_tfNElitistaActionPerformed
+
+    private void brTotalmenteNovaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brTotalmenteNovaActionPerformed
+        // TODO add your handling code here:
+        forceGeracaoNovaEnum();
+    }//GEN-LAST:event_brTotalmenteNovaActionPerformed
+
+    private void brFastSwapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brFastSwapActionPerformed
+        // TODO add your handling code here:
+        forceMutacaoEnum();;
+    }//GEN-LAST:event_brFastSwapActionPerformed
+
+    private void brSwapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brSwapActionPerformed
+        // TODO add your handling code here:
+        forceMutacaoEnum();
+    }//GEN-LAST:event_brSwapActionPerformed
 
     /**
      * @param args the command line arguments
@@ -584,9 +802,15 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup bgMS;
+    private javax.swing.ButtonGroup bgMutacaoTipo;
+    private javax.swing.ButtonGroup bgNovaGeracao;
+    private javax.swing.ButtonGroup bgSelecaoTipo;
+    private javax.swing.JRadioButton brElitista;
+    private javax.swing.JRadioButton brFastSwap;
     private javax.swing.JRadioButton brFitness;
     private javax.swing.JRadioButton brRankingFitness;
+    private javax.swing.JRadioButton brSwap;
+    private javax.swing.JRadioButton brTotalmenteNova;
     private javax.swing.JButton btIniciar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -596,17 +820,16 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lbApenasPercentage;
     private javax.swing.JLabel lbPercentage;
     private javax.swing.JTextField tfGeracoes;
+    private javax.swing.JTextField tfNElitista;
     private javax.swing.JTextField tfTamanhoPopulacao;
     private javax.swing.JTextField tfTaxaCruzamento;
     private javax.swing.JTextField tfTaxaMutacao;

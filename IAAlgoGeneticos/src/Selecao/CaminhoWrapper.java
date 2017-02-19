@@ -26,7 +26,7 @@ public class CaminhoWrapper implements Comparable{
         if (o instanceof CaminhoWrapper)
         {
             CaminhoWrapper outroCaminho = (CaminhoWrapper)o;
-            return(outroCaminho.fitness - this.fitness);
+            return(new Double(outroCaminho.fitness - this.fitness).intValue());
         }
         return(0);
     }

@@ -27,9 +27,11 @@ public class Fitness implements TipoSelecao{
         double maiorCusto = populacao.getMaiorCustoLocal();
         if (populacao!=pop || (populacao==pop&&populacao.getGeracao()!=geracao) )
         {
+            //System.out.println("Calculando pop");
             pop = populacao;
             geracao = populacao.getGeracao();
             List< Caminho > caminho = populacao.getPop();
+            //System.out.println("pop.size : " + caminho.size());
             caminhosFitness = new ArrayList<>();
             totalfitness = 0;
             for (Caminho c : caminho)
@@ -40,8 +42,13 @@ public class Fitness implements TipoSelecao{
                 CaminhoWrapper wrapper = new CaminhoWrapper(c,fitnesslocal);
                 caminhosFitness.add(wrapper);
                 totalfitness = totalfitness + fitnesslocal;
+                //System.out.println("totalfitness : " + totalfitness);
             }
             //System.out.println("total fitness : " + totalfitness);
+        }
+        else
+        {
+            //System.out.println("Pop ja calculado");
         }
         Random gen = new Random();
         int numeroRoleta = gen.nextInt(totalfitness)+1;
